@@ -1,8 +1,12 @@
 <template>
   <div id="app">
-    <h1>{{ title }}</h1>
-
-    <button v-on:click="toggleMessage">Toggle</button>
+    <input v-model="newTodoText" @keyup.enter="addTodo">
+    <ul>
+      <li v-for="(todo, index) in todos" :key="index">
+        <span>{{ todo.text }}</span>
+        <button @click="removeTodo(todo)">X</button>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -11,14 +15,29 @@ export default {
   name: 'app',
   data () {
     return {
-      title : "Welcome!"
+      newTodoText: '',
+      todos: [
+        { text: "Add some todos" }
+      ]
     }
   },
 
   methods: {
-    toggleMessage () {
-      this.title = this.title === "Welcome!" ? "Goodbye!" : "Welcome!"
+    addTodo() {
+      var text = this.newTodoText.trim()
+      console.log(this.newTodoText)
+      if (text) {
+        this.todos.unshift({
+          text: text
+        })
+        this.newTodoText = ''
+      }
+    },
+
+    removeTodo(todo) {
+      this.todos.splice(this.todos.indexOf(todo), 1)
     }
+
   }
 }
 </script>
